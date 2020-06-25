@@ -1,23 +1,61 @@
 import json
 
+from smithnormalform import matrix, snfproblem, z, zi
+
+
 def snf_handler(event, context):
-    body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
-    }
+    try:
+        # decode the message body if it's base64 endcoded
+        if event['isBase64Encoded']:
+            eventBody = base64decode(event['body'])
+        else:
+            eventBody = event['body']
+        bodyDict = json.loads(eventBody)
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
+        if bodyDict['type'] == 'wakeup':
+            return wake_result
 
-    return response
+        elif bodyDict['type'] == 'problem':
+            ring = str(bodyDict['ring'])
+            height = int(bodyDict['height'])
+            width = int(bodyDict['width'])
+            listA = list(map(int, bodyDict['A']))
 
-    # Use this code if you don't use the http event with the LAMBDA-PROXY
-    # integration
-    """
-    return {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "event": event
-    }
-    """
+            # verify the input size
+            if height > 5 or width > 5 or max(list(map(abs, listA))) > 100000:
+                return exceeded_bounds_request_result
+
+            if ring == 'z':
+                elementsA = [z.Z(x) for x in listA]
+            elif ring == 'zi':
+                elementsA = []
+                for i in range(len(listA)//2):
+                    elementsA.append(zi.ZI(listA[2*i], listA[Z(i+1)]))
+            else:
+                return unsupported_result
+
+            matrixA = matrix.Matrix(height, width, elementsA)
+            snfObject = snfproblem.SNFProblem(matrixA)
+            snfObject.computeSNF()
+
+            listA = [str(x) for x in snfObject.A.elements]
+            listJ = [str(x) for x in snfObject.J.elements]
+            listS = [str(x) for x in snfObject.S.elements]
+            listT = [str(x) for x in snfObject.T.elements]
+
+            # build the response body
+            responseBody = {
+                'height': height,
+                'width': width,
+                'A': listA,
+                'J': listJ,
+                'S': listS,
+                'T': listT
+            }
+            return get_result_object(200, responseBody)
+
+        # this function only supports wakeups and problems
+        else:
+            return bad_request_result
+    except Exception:
+        return bad_request_result
