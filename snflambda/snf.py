@@ -22,7 +22,7 @@ def snf_handler(event, context):
             listA = list(map(int, bodyDict['A']))
 
             # verify the input size
-            if height > 5 or width > 5 or max(list(map(abs, listA))) > 100000:
+            if height > 10 or width > 10 or max(list(map(abs, listA))) > 100000:
                 return exceeded_bounds_request_result
 
             if ring == 'z':
