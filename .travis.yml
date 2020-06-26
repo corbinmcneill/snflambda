@@ -21,4 +21,4 @@ deploy:
   role: arn:aws:iam::989832117645:role/service-role/snf-lambda-role-42scgs5a
   runtime: python3.8
   module_name: snflambda
-  handler_name: snf_handler
+  handler_name: snf.snf_handler
