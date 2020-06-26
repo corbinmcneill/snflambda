@@ -7,6 +7,7 @@ from smithnormalform import matrix, snfproblem, z, zi
 def snf_handler(event, context):
     print(event)
     response = snf_work(event, context)
+    print(response)
     return response
 
 
