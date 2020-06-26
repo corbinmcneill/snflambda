@@ -5,6 +5,12 @@ from smithnormalform import matrix, snfproblem, z, zi
 
 
 def snf_handler(event, context):
+    print(event)
+    response = snf_work(event, context)
+    return response
+
+
+def snf_work(event, context):
     try:
         # decode the message body if it's base64 endcoded
         if event['isBase64Encoded']:
