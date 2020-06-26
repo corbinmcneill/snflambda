@@ -22,3 +22,4 @@ deploy:
   runtime: python3.8
   module_name: snflambda
   handler_name: snf.snf_handler
+  timeout: 10
