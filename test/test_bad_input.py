@@ -23,7 +23,7 @@ def test_too_large_magnitude():
 
     result = snf.snf_handler(eventObj, None)
 
-    assert(result['status'] == 403)
+    assert(result['statusCode'] == 403)
 
 
 def test_too_large_dimension():
@@ -44,7 +44,7 @@ def test_too_large_dimension():
 
     result = snf.snf_handler(eventObj, None)
 
-    assert(result['status'] == 403)
+    assert(result['statusCode'] == 403)
 
 
 def test_bad_ring():
@@ -65,7 +65,7 @@ def test_bad_ring():
 
     result = snf.snf_handler(eventObj, None)
 
-    assert(result['status'] == 400)
+    assert(result['statusCode'] == 400)
 
 
 def test_bad_operation():
@@ -86,4 +86,4 @@ def test_bad_operation():
 
     result = snf.snf_handler(eventObj, None)
 
-    assert(result['status'] == 400)
+    assert(result['statusCode'] == 400)

@@ -24,7 +24,7 @@ def test_1x1_z():
 
     result = snf.snf_handler(eventObj, None)
 
-    assert(result['status'] == 200)
+    assert(result['statusCode'] == 200)
 
     resultBody = json.loads(result['body'])
 
@@ -54,7 +54,7 @@ def test_2x2_z():
 
     result = snf.snf_handler(eventObj, None)
 
-    assert(result['status'] == 200)
+    assert(result['statusCode'] == 200)
 
     resultBody = json.loads(result['body'])
 
