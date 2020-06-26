@@ -56,6 +56,9 @@ def snf_handler(event, context):
             return {'statusCode': 200, 'body': json.dumps(responseBody)}
 
         else:
-            return {'statusCode': 400, 'body': 'only supports wakeup and problem'}
+            return {
+                    'statusCode': 400,
+                    'body': 'only supports wakeup and problem'
+                   }
     except Exception:
         return {'statusCode': 500, 'body': 'an unknown error occurred'}
