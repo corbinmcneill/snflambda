@@ -3,6 +3,7 @@ python:
 - '3.8'
 install:
 - pip install -r requirements.txt
+- pip install -r requirements.txt -t .
 script:
 - make lint
 - pytest --cov=snflambda
@@ -10,6 +11,7 @@ notifications:
   email:
     on_success: never
     on_failure: always
+before_deploy:
 deploy:
   provider: lambda
   access_key_id:
@@ -22,4 +24,5 @@ deploy:
   runtime: python3.8
   module_name: snflambda
   handler_name: snf.snf_handler
+  zip: .
   timeout: 10
