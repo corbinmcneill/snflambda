@@ -5,7 +5,7 @@ from smithnormalform import matrix, snfproblem, z, zi
 
 def snf_handler(event, context):
     try:
-        # decode the message body if it's base64 endcoded
+    # decode the message body if it's base64 endcoded
         if event['isBase64Encoded']:
             eventBody = base64decode(event['body'])
         else:
@@ -13,17 +13,17 @@ def snf_handler(event, context):
         bodyDict = json.loads(eventBody)
 
         if bodyDict['type'] == 'wakeup':
-            return wake_result
+            return {'status': 200, 'body': 'wakeup success'}
 
         elif bodyDict['type'] == 'problem':
             ring = str(bodyDict['ring'])
             height = int(bodyDict['height'])
             width = int(bodyDict['width'])
-            listA = list(map(int, bodyDict['A']))
+            listA = list(map(int, bodyDict['contents']))
 
             # verify the input size
             if height > 10 or width > 10 or max(list(map(abs, listA))) > 100000:
-                return exceeded_bounds_request_result
+                return {'status': 403, 'body': 'input too large'}
 
             if ring == 'z':
                 elementsA = [z.Z(x) for x in listA]
@@ -32,7 +32,7 @@ def snf_handler(event, context):
                 for i in range(len(listA)//2):
                     elementsA.append(zi.ZI(listA[2*i], listA[Z(i+1)]))
             else:
-                return unsupported_result
+                return {'status': 400, 'body': 'unsupported ring'}
 
             matrixA = matrix.Matrix(height, width, elementsA)
             snfObject = snfproblem.SNFProblem(matrixA)
@@ -52,10 +52,9 @@ def snf_handler(event, context):
                 'S': listS,
                 'T': listT
             }
-            return get_result_object(200, responseBody)
+            return {'status': 200, 'body': json.dumps(responseBody)}
 
-        # this function only supports wakeups and problems
         else:
-            return bad_request_result
+            return {'status': 400, 'body': 'only supports wakeup and problem'}
     except Exception:
-        return bad_request_result
+        return {'status': 500, 'body': 'an unknown error occurred'}
