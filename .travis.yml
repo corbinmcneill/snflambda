@@ -1,20 +1,24 @@
 language: python
-
 python:
 - '3.8'
-
 install:
 - pip install -r requirements.txt
-
 script:
 - make lint
 - pytest --cov=snflambda
-
 notifications:
   email:
     on_success: never
     on_failure: always
-
 deploy:
-  provider: script
-  script: echo 'hello world'
+  provider: lambda
+  access_key_id:
+    secure: CifAchNFLAnYTiffiWH/wRzQgBLF90n3h+6c/6x/MOMGNKXH8SW9zWING1YDgINdsGX9b5JHffhuEWGrxTsDwcnEUzDKoGcOMUJyy3Ki0ioaA4ngQCtvMqhd8mW0C1THBqCkac+bFVmBlf1lechRW8Whid+mL3zC6c4yuFYbFmYHXD88Jd5t29rCAVgQXNjOwoF4MYS0lLA7TJqVmRX97D3aoIDqswIXWiR6EttWNyH99AdLMavTnYlRsZJgNKG68QvZRB/h3Uo2b9bAkBK7MHP/757N3+2Pa5V/25WjdfR4D/0ljas4apNk4ugvX24ibTVpJkOvTb/n69MgsnHpl43hBed/8+m4j3XY1lot6RClI2CPTjfyJEqCvaPGPzz7SQ+OAb0SgpHtZ9g/6zifPENC7dN1iPUixE+GplzyGd1CvlpaP5GGTbQ48DJf9X9kUBdKUbncX8V6PELBY7uVYatlxBPjSaurGKIHK5yq2ZARVQLlzknRFII+Z29xhPiq8q61yfgKnIdPfGdtF+MY6FIPZcmOyQX/FzmGW5t741peGpMeBLLF6CpNhvpr0d6OuWNvl/+o8ilqm4B1BLACcjLqwp+ajT+SH0wdhli3kknE3xQemm0K56sdlnVPVI/8TZCCRQUSsPy9+PTd9yfnQUvHQg/E6IPE4oz625QtlCQ=
+  secret_access_key:
+    secure: HdGyCAUjkkw9TafxFdWw5Szaia++DDenxVugv9/wbL7WtmlcdMAQbunKKH0DuT0L9io1pk3WbnkdjMD8264qVjyTt5ZFllpWIPmOotxDdBpEVsZ6j1q6VHhLq6kc5gU0EdLr2urgiR6HmGAR9Ln1ly+HfyAWGSKpsKgR/b5/3g58yPWqJks9pUld9Le2Tfx9RLBPD22gBy1G1NJgCV6/duIm4dd5zEclEMxWYb6mXdxrkM7UqUYUbI1r+yYiL8L3k9Dv4C7EJ1M93NFsD+1RW089cCC44QDB3oMaxetu1vDLMTCb8vmPieF0uXmtfqXXEfo4R+VsOYuZoYtXfMubaXJuIYiVDBwQVGgvWFa9RX+TkuUW7+29ayVmmL0/QWxKN+BpoyaxcN1mzab4hhn06gRPNKv/deVa6OdkqrCZdxPyiYouwEdCKizE641GqH/DSY6qjTGj6EXuNCRtmN0izEZzETla6AjMxQDIp/jNBVib2zlP9tyDh8neP1aybyClpx5LWd70NMiS6t6zzCehAcTljxMft0fcD6qYZ14Oz8rP1cQpM2OwlRtTv6DlvBuruDtt+7yHXvAljiYv/J6P1iyhYgN1SA/wSfm2sUN+m+tTCq1QpbsHKUqEq5oyd4CZoYN6pvRK5p41Hacq7FbpfLGJe7y+pYz+z8U0TXSZzmM=
+  function_name: snf-lambda
+  region: us-east-1
+  role: arn:aws:iam::989832117645:role/service-role/snf-lambda-role-42scgs5a
+  runtime: python3.8
+  module_name: snflambda
+  handler_name: snf_handler
