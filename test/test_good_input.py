@@ -1,6 +1,6 @@
 import json
 from snflambda import snf
-from smithnormalform import matrix, snfproblem, z, zi
+from smithnormalform import matrix, snfproblem, z
 
 
 event_mock_filename = 'data/lambda-event-mock.json'

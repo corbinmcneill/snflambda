@@ -1,3 +1,4 @@
+import base64
 import json
 
 from smithnormalform import matrix, snfproblem, z, zi
@@ -5,9 +6,9 @@ from smithnormalform import matrix, snfproblem, z, zi
 
 def snf_handler(event, context):
     try:
-    # decode the message body if it's base64 endcoded
+        # decode the message body if it's base64 endcoded
         if event['isBase64Encoded']:
-            eventBody = base64decode(event['body'])
+            eventBody = base64.b64decode(event['body'])
         else:
             eventBody = event['body']
         bodyDict = json.loads(eventBody)
@@ -22,7 +23,7 @@ def snf_handler(event, context):
             listA = list(map(int, bodyDict['contents']))
 
             # verify the input size
-            if height > 10 or width > 10 or max(list(map(abs, listA))) > 100000:
+            if height > 10 or width > 10 or max(list(map(abs, listA))) > 1e5:
                 return {'status': 403, 'body': 'input too large'}
 
             if ring == 'z':
@@ -30,7 +31,7 @@ def snf_handler(event, context):
             elif ring == 'zi':
                 elementsA = []
                 for i in range(len(listA)//2):
-                    elementsA.append(zi.ZI(listA[2*i], listA[Z(i+1)]))
+                    elementsA.append(zi.ZI(listA[2*i], listA[zi.ZI(i+1)]))
             else:
                 return {'status': 400, 'body': 'unsupported ring'}
 

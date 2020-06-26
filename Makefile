@@ -1,7 +1,6 @@
 lint:
 	flake8 snflambda
 	flake8 test
-	flake8 *.py
 
 test: clean-pyc
 	pytest --cov=snflambda
